@@ -1,60 +1,67 @@
 #include <linux/module.h>
-#include <linux/fs.h>
+#include <linux/moduleparam.h>
 #include <linux/init.h>
-#include <linux/kernel.h>
+#include <linux/kernel.h>   
 #include <linux/proc_fs.h>
+#include <linux/uaccess.h>
+#include <linux/fs.h>
+#include <linux/utsname.h>
+#include <linux/mm.h>
+#include <linux/swapfile.h>
 #include <linux/seq_file.h>
-#include <linux/mman.h>
-#include <linux/mmzone.h>
-#include <linux/swap.h>
-#include <linux/vmstat.h>
-#include <linux/atomic.h>
-#include <linux/vmalloc.h>
+#define BUFSIZE  1000
 
-void __attribute__((weak)) arch_report_meminfo(struct seq_file *m){}
+unsigned long copy_to_user(void __user *to,const void *from, unsigned long n);
+unsigned long copy_from_user(void *to,const void __user *from,unsigned long n);
+MODULE_LICENSE("RAM G8");
+MODULE_AUTHOR("G8");
+struct sysinfo i;
 
-static int hrrp_proc_show(struct seq_file *m, void *v)
+static struct proc_dir_entry *ent;
+
+static ssize_t mywrite(struct file *file, const char __user *ubuf,size_t count, loff_t *ppos) 
 {
-	#define K(x) ((x) << (PAGE_SHIFT - 10))
-		struct sysinfo i;
-		si_meminfo(&i);
-		seq_printf(m,"{\n \"FreeRam\" : %8lu , \n  \"TotalRam\" : %8lu \n }",K(i.freeram),K(i.totalram));
-
-		return 0;
-	#undef K
+    printk( KERN_DEBUG "write handler\n");
+    return -1;
 }
 
-static int 
-hrrp_proc_open(struct inode *inode, struct file *file)
-{
-	return single_open(file, hrrp_proc_show, NULL);
+
+static int myread (struct seq_file *buff, void *v){
+
+    printk( KERN_DEBUG "read handler\n");
+    si_meminfo(&i);
+    seq_printf(buff,"{\"total\":%ld, \"libre\": %ld}", i.totalram, i.freeram);
+    
+    return 0;
 }
 
-static const struct file_operations hrrp_proc_fops = {
-	.owner		= THIS_MODULE,
-	.open		= hrrp_proc_open,
-	.read		= seq_read,
-	.llseek		= seq_lseek,
-	.release	= single_release,
+
+static int proc_init (struct inode *inode, struct file *file){
+    return single_open(file,myread,NULL);
+}
+    
+
+static const struct file_operations myops ={
+    .owner =THIS_MODULE,
+    .read=seq_read,
+    .release=single_release,
+    .open=proc_init,
+    .llseek=seq_lseek
 };
 
-static int __init 
-hrrp_proc_init(void)
-{
-	printk(KERN_INFO "ModuloRamHR loaded successfully!\n\n");
-	proc_create("ModuloRamHR", 0, NULL, &hrrp_proc_fops);
-	return 0;
+static int simple_init(void){
+
+    printk(KERN_INFO "Hola mundo, somos el grupo 18\n");
+    ent=proc_create("RAM",0,NULL,&myops);
+    return 0;
 }
 
-static void __exit 
-hrrp_proc_exit(void)
+static void simple_cleanup(void)
 {
-	printk(KERN_INFO "ModuloRamHR unloaded successfully!\n\n");
-	remove_proc_entry("ModuloRamHR", NULL);
+    printk(KERN_INFO "Sayonara mundo, somos el grupo 18\n");
+    proc_remove(ent);
+
 }
 
-module_init(hrrp_proc_init);
-module_exit(hrrp_proc_exit);
-MODULE_LICENSE("GPL");
-MODULE_AUTHOR("201602975");
-MODULE_DESCRIPTION("");
+module_init(simple_init);
+module_exit(simple_cleanup);
