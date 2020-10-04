@@ -1,0 +1,15 @@
+flask-mongo:
+  build: .
+  ports:
+    - "5000:5000"
+  volumes:
+    - "./app/:/code"
+  links:
+    - mongo
+
+mongo:
+  image: mongo
+  ports:
+    - "27017:27017"
+  volumes:
+    - "/srv/data/db:/data/db:rw"
