@@ -3,13 +3,15 @@ flask-mongo:
   ports:
     - "5000:5000"
   volumes:
-    - "./app/:/code"
-  links:
+    - "/proc:/proc"
+  nertwork_mode: host
+  depends_on:
     - mongo
 
 mongo:
   image: mongo
   ports:
     - "27017:27017"
-  volumes:
-    - "/srv/data/db:/data/db:rw"
+  expose:
+    - "27017"
+  nertwork_mode: host

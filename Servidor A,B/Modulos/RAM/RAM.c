@@ -42,19 +42,19 @@ static int __init
 crear(void)
 {
 	printk(KERN_INFO ">>Se creo el modulo RAM\n\n");
-	proc_create("ModuloRAM", 0, NULL, &var_entorno);
+	proc_create("RAM", 0, NULL, &var_entorno);
 	return 0;
 }
 
 static void __exit 
-exit(void)
+salir(void)
 {
 	printk(KERN_INFO ">>Modulo RAM cargado\n\n");
-	remove_proc_entry("ModuloRAM", NULL);
+	remove_proc_entry("RAM", NULL);
 }
 
 module_init(crear);
-module_exit(exit);
+module_exit(salir);
 
 MODULE_AUTHOR("201602975 Ruth Nohemy Ardón Lechuga");
 MODULE_DESCRIPTION("--RAM---");
