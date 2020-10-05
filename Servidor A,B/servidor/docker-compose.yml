@@ -1,4 +1,4 @@
-version: '1'
+version: '2.2'
 services: 
   flask-mongo:
     build: .
@@ -9,7 +9,7 @@ services:
     network_mode: host
     depends_on:
       - mongo
-
+  
   mongo:
     image: mongo
     ports:

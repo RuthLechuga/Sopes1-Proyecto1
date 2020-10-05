@@ -26,9 +26,13 @@ def index():
 
 @app.route('/datos_servidor',methods=['GET'])
 def obtener():
-    oracion = mongo.db.oracion
-    cantidad_datos = oracion.count()
-    return jsonify({"cantidad_datos":cantidad_datos})
+     f = open("/proc/RAM", "r")
+     datos = f.read()
+     f.close()
+     return datos
+#    oracion = mongo.db.oracion
+#    cantidad_datos = oracion.count()
+#    return jsonify({"cantidad_datos":cantidad_datos})
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0",debug=True)
