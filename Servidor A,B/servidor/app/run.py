@@ -31,7 +31,7 @@ def obtenerDatos():
      f.close()
      oracion = mongo.db.oracion
      cantidad_datos = oracion.count()
-     return jsonify({'cantidadDatos':cantidad_datos, 'RAM':porcentajeRAM})
+     return jsonify({'cantidadDatos':cantidad_datos, 'RAM':porcentajeRAM, 'CPU': 90})
 
 @app.route('/getPorcentajes',methods=['GET'])
 def obtenerPorcentajes():
@@ -39,7 +39,7 @@ def obtenerPorcentajes():
      datos = loads(f.read())
      porcentajeRAM = (datos['Free']/datos['Total'])*100
      f.close()
-     return jsonify({'RAM':porcentajeRAM})
+     return jsonify({'RAM':porcentajeRAM, 'CPU': 90})
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0",debug=True)
