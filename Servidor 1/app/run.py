@@ -3,8 +3,8 @@ from bson.json_util import dumps, loads
 import requests
 
 app = Flask(__name__)
-pServidorA = 'http://35.224.184.225:5000/'
-pServidorB = 'http://35.184.254.66:5000/'
+pServidorA = 'http://34.123.224.145:5000/'
+pServidorB = 'http://35.226.94.227:5000/'
 
 @app.route('/postear',methods=['POST'])
 def index():
