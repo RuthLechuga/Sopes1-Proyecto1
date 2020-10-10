@@ -25,21 +25,32 @@ def index():
 
 @app.route('/datos_servidor',methods=['GET'])
 def obtenerDatos():
-     f = open('/proc/RAM', 'r')
-     datos = loads(f.read())
-     porcentajeRAM = (datos['Free']/datos['Total'])*100
-     f.close()
-     oracion = mongo.db.oracion
-     cantidad_datos = oracion.count()
-     return jsonify({'cantidadDatos':cantidad_datos, 'RAM':porcentajeRAM, 'CPU': 90})
+    f = open('/proc/RAM', 'r')
+    datos = loads(f.read())
+    porcentajeRAM = (datos['Free']/datos['Total'])*100
+    f.close()
+    
+    f = open('/proc/CPU', 'r')
+    porcentajeCPU = f.read()
+    f.close()
+
+
+    oracion = mongo.db.oracion
+    cantidad_datos = oracion.count()
+    return jsonify({'cantidadDatos':cantidad_datos, 'RAM':porcentajeRAM, 'CPU': porcentajeCPU})
 
 @app.route('/getPorcentajes',methods=['GET'])
 def obtenerPorcentajes():
-     f = open('/proc/RAM', 'r')
-     datos = loads(f.read())
-     porcentajeRAM = (datos['Free']/datos['Total'])*100
-     f.close()
-     return jsonify({'RAM':porcentajeRAM, 'CPU': 90})
+    f = open('/proc/RAM', 'r')
+    datos = loads(f.read())
+    porcentajeRAM = (datos['Free']/datos['Total'])*100
+    f.close()
+
+    f = open('/proc/CPU', 'r')
+    porcentajeCPU = f.read()
+    f.close()
+     
+    return jsonify({'RAM':porcentajeRAM, 'CPU': porcentajeCPU})
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0",debug=True)

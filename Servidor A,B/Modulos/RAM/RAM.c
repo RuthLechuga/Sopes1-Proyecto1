@@ -42,7 +42,7 @@ static int __init
 crear(void)
 {
 	printk(KERN_INFO ">>Se creo el modulo RAM\n\n");
-	proc_create("RAM", 0, NULL, &var_entorno);
+	proc_create("RAM", 0777, NULL, &var_entorno);
 	return 0;
 }
 

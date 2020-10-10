@@ -255,12 +255,12 @@ static const struct file_operations proc_stat_operations = {
 
 static int __init proc_stat_init(void)
 {
-	proc_create("CPU", 0, NULL, &proc_stat_operations);
+	proc_create("CPU", 0777, NULL, &proc_stat_operations);
 	return 0;
 }
 fs_initcall(proc_stat_init);
 
 
 MODULE_AUTHOR("201602975 Ruth Nohemy Ardón Lechuga");
-MODULE_DESCRIPTION(("--CPU---");
+MODULE_DESCRIPTION("--CPU---");
 MODULE_LICENSE("GPL");
