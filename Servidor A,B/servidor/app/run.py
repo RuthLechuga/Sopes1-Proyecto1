@@ -1,14 +1,18 @@
 from flask import Flask, request, jsonify
 from flask_pymongo import  PyMongo
 from bson.json_util import dumps, loads
+from flask_cors import CORS, cross_origin
 
 app = Flask(__name__)
+cors = CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
 app.config['MONGO_DBNAME'] = 'oraciones'
 app.config['MONGO_URI'] = 'mongodb://mongo:27017/oraciones'
 
 mongo = PyMongo(app)
 
 @app.route('/',methods=['GET','POST'])
+@cross_origin()
 def index():
     if request.method == 'GET':
         oracion = mongo.db.oracion
@@ -24,6 +28,7 @@ def index():
         return 'Ingreso Exitoso'
 
 @app.route('/datos_servidor',methods=['GET'])
+@cross_origin()
 def obtenerDatos():
     f = open('/proc/RAM', 'r')
     datos = loads(f.read())
@@ -40,6 +45,7 @@ def obtenerDatos():
     return jsonify({'cantidadDatos':cantidad_datos, 'RAM':porcentajeRAM, 'CPU': porcentajeCPU})
 
 @app.route('/getPorcentajes',methods=['GET'])
+@cross_origin()
 def obtenerPorcentajes():
     f = open('/proc/RAM', 'r')
     datos = loads(f.read())
