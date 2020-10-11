@@ -26,6 +26,13 @@ def index():
         oracion.save(content)
         return 'Ingreso Exitoso'
 
+@app.route('/borrar',methods=['GET'])
+@cross_origin()
+def borrar():
+	oracion = mongo.db.oracion
+	oracion.drop()
+	return 'datos borrados'
+
 @app.route('/datos_servidor',methods=['GET'])
 @cross_origin()
 def obtenerDatos():
