@@ -7,6 +7,7 @@ RUN pip3 install  pymongo
 RUN pip3 install Flask
 RUN pip3 install Flask-PyMongo
 RUN pip3 install requests
+RUN pip3 install flask-cors
 
 EXPOSE 5000
 ADD ./app/* /code/
