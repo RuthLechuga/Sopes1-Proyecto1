@@ -28,7 +28,6 @@ class Home extends React.Component {
 
   handleChange(e) {
     this.setState({servidor: e.target.value})
-    console.log(this.state.servidor)
     this.cargarNotas()
   }
 
@@ -76,7 +75,7 @@ class Home extends React.Component {
                 <List>
                   {this.state.notas.map( value =>{
                     return(
-                      <ListItem key={value._id}>
+                      <ListItem key={value._id.$oid}>
                         <ListItemAvatar><Avatar style={{backgroundColor: "blue"}} /></ListItemAvatar>
                         <ListItemText 
                           primary={value.nota} 
