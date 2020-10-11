@@ -21,8 +21,7 @@ def index():
         return dumps(resultados)
 
     if request.method == 'POST':
-        print(request.json)
-        content = json.loads(str(request.json))
+        content = json.loads(request.json)
         oracion = mongo.db.oracion
         oracion.save(content)
         return 'Ingreso Exitoso'
