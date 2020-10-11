@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify
 from flask_pymongo import  PyMongo
 from bson.json_util import dumps, loads
 from flask_cors import CORS, cross_origin
+import json
 
 app = Flask(__name__)
 cors = CORS(app)
@@ -20,11 +21,10 @@ def index():
         return dumps(resultados)
 
     if request.method == 'POST':
-        content = request.json
-        autor = content['autor']
-        nota = content['nota']
+        print(request.json)
+        content = json.loads(str(request.json))
         oracion = mongo.db.oracion
-        oracion.save({'autor':autor, 'nota': nota})
+        oracion.save(content)
         return 'Ingreso Exitoso'
 
 @app.route('/datos_servidor',methods=['GET'])
